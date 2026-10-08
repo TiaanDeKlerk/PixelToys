@@ -1,0 +1,27 @@
+{
+  "shop": {
+    "tagline": "Fresh toys, straight off the printer",
+    "currency": "R",
+    "printTime": "3–5 days",
+    "howToOrder": "Tell us which toy and color you want next time you see us. We'll print it just for you!",
+    "colors": [
+      {
+        "name": "Black",
+        "hex": "#111111"
+      },
+      {
+        "name": "Lime green",
+        "hex": "#a6e22e"
+      },
+      {
+        "name": "Cyan",
+        "hex": "#22d3ee"
+      },
+      {
+        "name": "Yellow",
+        "hex": "#ffd60a"
+      }
+    ]
+  },
+  "toys": []
+}
