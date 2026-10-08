@@ -2,7 +2,7 @@
   "shop": {
     "tagline": "Fresh toys, straight off the printer",
     "currency": "R",
-    "printTime": "3–5 days",
+    "printTime": "0.5-2 days",
     "howToOrder": "Tell us which toy and color you want next time you see us. We'll print it just for you!",
     "colors": [
       {
@@ -20,6 +20,18 @@
       {
         "name": "Yellow",
         "hex": "#ffd60a"
+      },
+      {
+        "name": "Orange",
+        "hex": "#ff8a1f"
+      },
+      {
+        "name": "Red",
+        "hex": "#e53935"
+      },
+      {
+        "name": "Blue",
+        "hex": "#2f6bff"
       }
     ]
   },
