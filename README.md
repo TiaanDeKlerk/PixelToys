@@ -1,52 +1,45 @@
 # Pixel Toys
 
-A small static shop page for Tiaan's 3D printed toys, hosted on GitHub Pages.
+Tiaan's shop for 3D printed toys. Live at https://pixeltoys.netlify.app (Netlify deploys every commit to this repository).
 
-## Files
+## How it fits together
 
-| File | What it is |
+| Part | Where |
 | --- | --- |
-| `index.html` | Page shell |
-| `style.css` | All styling (black, lime green, cyan, yellow) |
-| `app.js` | Renders the shop from `shop.json`, handles color picking and the order popup |
-| `shop.json` | **All shop content.** Edit this to add toys or change settings |
-| `images/` | Toy photos |
+| Shop page | `index.html`, `app.js`, `style.css` |
+| Edit shop page (owner only) | `admin.html`, `admin.js`, `admin.css` → https://pixeltoys.netlify.app/admin.html |
+| Price formula | `pricing.js` |
+| Supabase connection | `config.js` (project URL + publishable key; both are safe to be public) |
+| Database setup | `supabase/setup.sql`, `supabase/make-me-admin.sql` |
 
-## Putting it online (one time)
+Data lives in Supabase project `rwmcrnmtyeilhmzgaaom`:
 
-1. Create a GitHub account named after the shop, e.g. `thepixeltoys`.
-2. Create a **public** repository named exactly `thepixeltoys.github.io` (account name + `.github.io`).
-3. Upload everything in this folder to the repository (Add file → Upload files), keeping the `images` folder.
-4. Settings → Pages → Source: *Deploy from a branch*, branch `main`, folder `/ (root)`.
-5. After a minute or two the shop is live at `https://thepixeltoys.github.io`.
+- `settings`: one row with the tagline, currency, order-form message, colors and pricing numbers.
+- `toys`: name, description, price, grams, print hours, print time text, photo paths, hidden flag.
+- `orders`: sent from the shop's order form. Customers can only insert; only admins can read.
+- `admins`: user ids allowed to use the Edit shop page.
+- Storage bucket `toy-photos` (public read, admin-only upload).
 
-## Adding a toy
+Row level security is on for every table. Never put the secret / service_role key in this repository.
 
-1. Put the photo in `images/`, e.g. `images/flexi-dragon.jpg`. Keep it under ~300 KB (around 800px wide is plenty).
-2. Add an entry to the `toys` list in `shop.json`:
+## One-time setup
 
-```json
-{
-  "id": "flexi-dragon",
-  "name": "Flexi dragon",
-  "price": 50,
-  "desc": "Wiggly, bendy and about as long as your hand.",
-  "img": "images/flexi-dragon.jpg",
-  "hidden": false
-}
+1. Supabase → **SQL Editor** → New query → paste `supabase/setup.sql` → **Run**.
+2. Supabase → **Authentication → Users → Add user → Create new user**. Enter the owner's email and a password, and tick **Auto Confirm User**.
+3. SQL Editor → paste `supabase/make-me-admin.sql` → **Run**. It should list the owner's email.
+4. Supabase → **Authentication → Sign In / Providers** (or Settings) → turn off **Allow new users to sign up**, so nobody else can create an account.
+5. Upload the site files to GitHub. Netlify publishes them.
+
+## Pricing
+
+```
+cost  = grams × (price per kg ÷ 1000) + print hours × rate per hour
+price = cost + profit% of cost + electricity% of cost, rounded to the nearest R5
 ```
 
-- `id`: any unique word, no spaces.
-- `price`: a number, or `""` to show "Price coming soon".
-- `hidden`: `true` keeps the toy off the page without deleting it.
-- Separate entries with commas. Paste the file into a JSON checker if the page stops loading.
+Defaults: R250 per kg, R20 per hour, 50% profit, 5% electricity. An 83 g toy that prints in 9 hours costs R310. All four numbers can be changed under **Settings** on the Edit shop page.
 
-Commit the change and the site updates in a minute or two.
+## Good to know
 
-## Shop settings (in `shop.json` → `shop`)
-
-- `tagline`: line under the name
-- `currency`: money sign, e.g. `R` or `$`
-- `printTime`: shown in step 2, e.g. `3–5 days`
-- `howToOrder`: shown when a customer taps **Order**. Think twice before putting a phone number or email here, since the page is public.
-- `colors`: the filament colors customers can choose
+- Free Supabase projects pause after about a week with no activity. If the shop stops loading, open the project in Supabase and click **Restore**.
+- Use your own photos of your own prints, and only sell designs whose license allows selling prints.
