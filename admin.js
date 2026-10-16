@@ -138,6 +138,8 @@
         (pic ? '<img class="thumb" src="' + esc(url(pic)) + '" alt="">' : '<span class="thumb">?</span>') +
         '<div><h3>' + esc(t.name) + '</h3><div class="meta">' +
           (t.price != null ? '<b>' + esc(money(t.price)) + '</b>' : '<span>No price yet</span>') +
+          (t.category ? '<span>' + esc(t.category) + '</span>' : '') +
+          (t.sold_in_person ? '<span>' + t.sold_in_person + ' sold in person</span>' : '') +
           (t.print_time ? '<span>' + esc(t.print_time) + '</span>' : '') +
           '<span>' + (t.images ? t.images.length : 0) + ' photo' + ((t.images || []).length === 1 ? '' : 's') + '</span>' +
           (t.hidden ? '<span class="tag">Hidden</span>' : '') +
@@ -159,6 +161,13 @@
       '<div class="field"><label>Photos</label><div class="pics-edit" id="t-pics"></div><span class="hint">Use your own photos. The one marked "Cover" shows on the shop card.</span></div>' +
       '<div class="field"><label for="t-name">Toy name</label><input id="t-name" maxlength="80" value="' + esc(d.name) + '" placeholder="Flexi dragon"></div>' +
       '<div class="field"><label for="t-desc">Short description</label><textarea id="t-desc" maxlength="400" placeholder="Wiggly, bendy and about as long as your hand.">' + esc(d.description) + '</textarea></div>' +
+      '<div class="two">' +
+        '<div class="field"><label for="t-cat">Category</label><input id="t-cat" maxlength="40" list="t-cats" value="' + esc(d.category || "") + '" placeholder="Fidgets">' +
+          '<datalist id="t-cats">' + categories().map(function (c) { return '<option value="' + esc(c) + '">'; }).join("") + '</datalist>' +
+          '<span class="hint">Toys in the same category get recommended together.</span></div>' +
+        '<div class="field"><label for="t-sold">Sold in person</label><input id="t-sold" inputmode="numeric" value="' + esc(d.sold_in_person || 0) + '">' +
+          '<span class="hint">Sales at school or to friends. Website orders are counted by themselves.</span></div>' +
+      '</div>' +
       '<div class="panel-box" style="padding:14px"><h3>Price calculator</h3>' +
         '<div class="two">' +
           '<div class="field"><label for="t-grams">Filament (grams)</label><input id="t-grams" inputmode="decimal" value="' + esc(d.grams == null ? "" : d.grams) + '" placeholder="83"></div>' +
@@ -251,7 +260,8 @@
       var name = $("#t-name").value.trim();
       if (!name) return fail("Give the toy a name first.");
       var row = {
-        id: d.id, name: name, description: $("#t-desc").value.trim(),
+        id: d.id, name: name, description: $("#t-desc").value.trim(), category: $("#t-cat").value.trim(),
+        sold_in_person: Math.round(num($("#t-sold").value) || 0),
         price: num($("#t-price").value), grams: num($("#t-grams").value), print_hours: num($("#t-hours").value),
         print_time: $("#t-ptime").value.trim(), images: d.images, hidden: $("#t-hidden").checked
       };
@@ -265,6 +275,12 @@
       });
     };
     $("#t-name").focus();
+  }
+
+  function categories() {
+    var seen = {};
+    S.toys.forEach(function (t) { if (t.category) seen[t.category] = true; });
+    return Object.keys(seen).sort();
   }
 
   function shrink(file) {

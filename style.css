@@ -109,3 +109,17 @@ button.photo:hover img { transform: scale(1.04); }
 .field input, .field textarea, .field select { background: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; }
 .field textarea { min-height: 80px; resize: vertical; }
 .check { display: flex; gap: 8px; align-items: center; }
+
+/* Shelves: Most popular, Recommended for you, Recent orders */
+.shelf + .shelf { border-top: 1px solid var(--line); padding-top: 24px; }
+.shelf .grid { padding-bottom: 32px; }
+.section-head h2 .hl { color: var(--yellow); }
+.section-head h2 .hl2 { color: var(--cyan); }
+.card { position: relative; }
+.rank { position: absolute; top: 10px; left: 10px; z-index: 1; font-family: var(--display); font-size: 1.1rem; line-height: 1; padding: 8px 10px; border-radius: 10px; color: var(--ink); background: var(--muted); box-shadow: 0 3px 0 rgba(0,0,0,.35); pointer-events: none; }
+.rank.r1 { background: var(--yellow); }
+.rank.r2 { background: var(--cyan); }
+.rank.r3 { background: var(--lime); }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag.hot { background: rgba(255,214,10,.14); color: var(--yellow); }
+.why { margin: 0; font-size: .85rem; color: var(--cyan); }
