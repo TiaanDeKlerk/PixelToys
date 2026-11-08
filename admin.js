@@ -309,7 +309,7 @@
     }).join("");
     var cards = list.map(function (o) {
       return '<article class="order' + (o.status === "new" ? " is-new" : "") + '">' +
-        '<div class="top"><h3>' + esc(o.toy_name) + (o.color ? ' · ' + esc(o.color) : '') + '</h3><span class="when">' + esc(when(o.created_at)) + '</span></div>' +
+        '<div class="top"><h3>' + (o.quantity > 1 ? o.quantity + ' × ' : '') + esc(o.toy_name) + (o.color ? ' · ' + esc(o.color) : '') + '</h3><span class="when">' + esc(when(o.created_at)) + '</span></div>' +
         '<dl><dt>Customer</dt><dd>' + esc(o.customer_name) + '</dd>' +
           '<dt>Contact</dt><dd class="contact">' + esc(o.contact) + '</dd>' +
           (o.price != null ? '<dt>Price</dt><dd>' + esc(money(o.price)) + '</dd>' : '') +
